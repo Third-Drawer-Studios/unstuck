@@ -1,9 +1,10 @@
 // Unstuck service worker — caches the app shell so it launches offline once installed.
 // Bump CACHE on any release to invalidate the old shell.
-const CACHE = 'unstuck-v13';
+const CACHE = 'unstuck-v14';
 const SHELL = [
   './',
   './index.html',
+  './privacy.html',
   './logic.js',
   './manifest.webmanifest',
   './icons/icon-192.png',

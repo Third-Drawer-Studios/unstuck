@@ -1658,6 +1658,30 @@
       app.win.Node.DOCUMENT_POSITION_FOLLOWING, 'it belongs under the buttons, not among them');
   });
 
+  test('the privacy policy is reachable from the data controls, and is ours', async () => {
+    const app = await boot(stateOf([listOf('once', 'Chores', ['Wash up'])]));
+    app.$('dataBtn').click();
+    const link = app.$('privacyLink');
+    equal(shown(app.win, link), true, 'a promise with no way to check it is worth less');
+    // Relative, so it works off the filesystem, on GitHub Pages and inside the wrap.
+    equal(link.getAttribute('href'), './privacy.html', 'it must not point off-site');
+    const rel = link.getAttribute('rel').split(/\s+/);
+    equal(rel.includes('noopener'), true, 'the tab it opens must not reach back');
+    equal(rel.includes('noreferrer'), true);
+  });
+
+  test('the privacy page loads nothing from anywhere else', async () => {
+    const res = await fetch('../privacy.html');
+    equal(res.ok, true, 'the policy has to actually be there — a dead URL fails store review');
+    const html = await res.text();
+    // The page states that nothing leaves the device; it may not itself be a
+    // counter-example. The Ko-fi href is a link, not a fetched asset.
+    equal(/<script/i.test(html), false, 'a privacy page has no business running code');
+    equal(/<(img|iframe|link[^>]+stylesheet|source)[^>]+https?:/i.test(html), false,
+      'no third-party asset may be embedded');
+    equal(html.includes('Privacy Policy'), true);
+  });
+
   test('turning animation off makes a pick land instantly', async () => {
     const state = stateOf([listOf('once', 'Chores', ['Wash up', 'Bins out'])]);
     state.settings = { textScale: 'normal', contrast: 'normal', motion: 'reduced', speak: false };

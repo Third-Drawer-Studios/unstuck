@@ -25,7 +25,7 @@ the browser only — for a real "Add to Home Screen" install, host the folder on
 Netlify.
 
 **Editing gotcha:** `sw.js` is network-first, but browsers still cache aggressively. After an edit,
-hard-refresh, or bump `CACHE` in `sw.js` (currently `unstuck-v13`), or load with a `?v=N`
+hard-refresh, or bump `CACHE` in `sw.js` (currently `unstuck-v14`), or load with a `?v=N`
 cache-buster. If a change seems not to apply, this is almost always why.
 
 ## Layout
@@ -68,7 +68,7 @@ Two suites, split by what each can actually reach:
   selection scoping, the starter-list definitions, the done/count linkage, the subtask rule in both
   directions, every nest / move / promote / reorder, the search fold and its map back to the original
   text, and the pick algorithm with an injected RNG so every branch is deterministic.
-- **`tests/dom.test.html`** (103 checks) — loads the real app in an iframe with real CSS and real
+- **`tests/dom.test.html`** (105 checks) — loads the real app in an iframe with real CSS and real
   `localStorage`. This is where wiring bugs live: that `hidden` elements are actually not displayed,
   that focus survives a chip toggle, that a rename reaches every label, that the starter picker adds
   only what was checked, that a kind change keeps every item, that the two display switches are

@@ -6,7 +6,7 @@ this is state and direction only.
 ## Status
 
 Shipped and live at **https://jamjamdev.github.io/unstuck/**, deployed from `main` via GitHub Pages.
-143 unit checks (`./test.sh`) and 103 browser checks (`./test.sh --browser`) passing.
+143 unit checks (`./test.sh`) and 105 browser checks (`./test.sh --browser`) passing.
 
 Built so far: the picker with rerolls and swipe, two list kinds plus two independent display
 switches, subtasks, starter lists, custom colours with a wheel, per-list timers, and accessibility
@@ -16,7 +16,7 @@ The latest round added a **search** above the list grid, answering "which list w
 reaches list names, things and their steps, includes finished things, folds case and accents, and
 groups every match under the list it is in. A match opens its list with that row outlined; the
 outline is dropped by the next render rather than by a timer, so nothing has to tidy up after it.
-`sw.js` is at `unstuck-v13`.
+`sw.js` is at `unstuck-v14`.
 
 Before it, `b737e57` put a **Sort** control above the grid — as added, by name either way, or by how
 many things are left — sorting a copy so the stored order still means "as added". `213efb5` made the

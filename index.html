@@ -1160,6 +1160,17 @@ dialog select:focus { border-color: var(--accent); outline: none; }
   border-radius: 12px;
   cursor: pointer;
 }
+/* The promise the app is built on, stated where the data controls are, with the
+   policy one tap away — a claim nobody can check is worth less than a link. */
+.privacy-note {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+.privacy-note a { color: var(--muted); text-decoration: underline; }
+.privacy-note a:hover, .privacy-note a:focus-visible { color: var(--accent); }
+
 /* The last thing in Settings, and the quietest: no border, no fill, so it reads as
    an offer rather than a control. It leaves the app, which the label says outright. */
 .tip-row {
@@ -1820,6 +1831,10 @@ dialog select:focus { border-color: var(--accent); outline: none; }
       <button class="btn danger" id="resetBtn">Erase everything</button>
       <button class="btn ghost" id="dataClose">Close</button>
     </div>
+
+    <p class="privacy-note">Your lists never leave this device. <a id="privacyLink" href="./privacy.html"
+      target="_blank" rel="noopener noreferrer">Privacy policy<span class="sr-only"> — opens in a new
+      tab</span></a></p>
     <input id="importFile" type="file" accept="application/json,.json" class="sr-only" tabindex="-1" aria-hidden="true">
 
     <a id="tipLink" class="tip-row" href="https://ko-fi.com/dreamdrawerstudio"
