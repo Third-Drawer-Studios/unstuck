@@ -1,11 +1,15 @@
 # Where Unstuck is up to
 
-Working notes, last updated 2026-09-18. The README covers how the app works and how to run it —
+Working notes, last updated 2026-10-13. The README covers how the app works and how to run it —
 this is state and direction only.
 
 ## Status
 
-Shipped and live at **https://jamjamdev.github.io/unstuck/**, deployed from `main` via GitHub Pages.
+Shipped and live at **https://unstuck.thirddrawerstudios.com/**, deployed from `main` of
+`Third-Drawer-Studios/unstuck` via GitHub Pages. The domain is a CNAME at the registrar (Northwest)
+to `third-drawer-studios.github.io.`, HTTPS is enforced, and `thirddrawerstudios.com` is verified in
+the org's Pages settings — keep its `_github-pages-challenge-…` TXT record, or the verification lapses.
+The old `jamjamdev.github.io/unstuck/` address is gone; lists were carried over by export and import.
 143 unit checks (`./test.sh`) and 105 browser checks (`./test.sh --browser`) passing.
 
 Built so far: the picker with rerolls and swipe, two list kinds plus two independent display
@@ -34,8 +38,8 @@ Git holds the detail; two lessons from it are worth keeping here:
   the scroll decision entirely, so it took a phone in a hand. Assume the same of anything else that
   depends on how a browser interprets a *gesture* rather than an event.
 
-The repo is **public**, which it had to be — GitHub Pages will not serve a private repo on the free
-plan. Only the code is public; lists live in each device's storage and never leave it.
+The repo is **public**, which it has to be — GitHub Pages will not serve a private repo on the free
+plan, and making it private once already took the site down. Only the code is public; lists live in each device's storage and never leave it.
 
 ## Next up
 
@@ -43,8 +47,10 @@ Headed for the Play Store. The code is not what is unfinished — the wrap, the 
 closed-test window are.
 
 0. **Before submitting**, in this order:
-   - A **privacy policy at a real URL** (GitHub Pages already serves one). Required for every app,
-     ads or not, and the Data safety form needs it.
+   - Done: a **privacy policy at a real URL**, `/privacy.html`, which the Data safety form needs.
+   - Decided: the store title is **"Unstuck: What To Do Next"** — the name stays, the subtitle says
+     what it does without sounding like a chore. The package ID will be
+     **`com.thirddrawerstudios.unstuck`**, which Play never lets change after the first upload.
    - **Data safety form**: today the honest answer is "no data collected, no data shared", which is
      the listing's best line. One qualifier is owed: the read-aloud setting hands item text to the
      system TTS engine, which is not guaranteed on-device for every language.
@@ -57,19 +63,28 @@ closed-test window are.
 1. **Use the new round for a week**, the same way. The widget's design still depends on what you
    actually want at a glance, and that is not answerable from a chair.
 
-2. **Android home-screen widget.** Needs the native wrap; a PWA cannot provide one. Decisions
-   already made:
-   - **Capacitor, not Bubblewrap/TWA** — a widget must read the lists, and a TWA leaves them inside
-     Chrome's storage where native code cannot reach.
+2. **Play Store as a TWA (Bubblewrap)**, decided 2026-09-26. The widget is not a priority, and a
+   TWA runs in real Chrome, so export downloads, timer notifications and read-aloud all work
+   unchanged — in a Capacitor WebView each of those fails silently and needs a plugin.
+   - Digital Asset Links must be served from the **origin root** (`/.well-known/assetlinks.json`),
+     which is why the app moved to its own subdomain: a GitHub project page lives under `/unstuck/`
+     and cannot put a file there. Without it the TWA shows Chrome's URL bar. `.nojekyll` is in place
+     so Pages serves the dot-folder.
+   - Lists live in the origin's storage. Moving the host again would leave web users' lists behind
+     on the old one — export, then import on the new origin.
+
+3. **Android home-screen widget — someday, and the TWA makes it expensive.** Moving to Capacitor
+   keeps the app ID but not the data: a TWA's lists sit in Chrome's storage, where the WebView and
+   native code cannot reach them, so the update would arrive empty. Ship a migration path (a
+   prompted export before the update, import after) before switching. Design already worked out:
+   - **Capacitor** — a widget must read the lists, which rules out a TWA.
    - `save()`/`load()` route through a storage adapter that also writes Android `SharedPreferences`.
      They are the only two functions that touch storage, so this stays contained.
    - The web app writes a **pre-shuffled queue** of upcoming picks; the widget pops from it. That
      keeps the pick algorithm in `logic.js` only, never reimplemented in Kotlin.
-   - Blocked on tooling: no JDK, Android SDK or Android Studio installed. That install is the real
-     cost, not the code.
 
-3. **Play Store, then possibly App Store.** Same Capacitor project as the widget. iOS needs a Mac
-   with Xcode and a paid Apple developer account.
+4. **Possibly the App Store.** Capacitor with the iOS target; iOS needs a Mac with Xcode and a paid
+   Apple developer account.
 
 ## Known limits
 

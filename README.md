@@ -37,6 +37,8 @@ index.html               the UI: markup, CSS, and the DOM shell in one IIFE
 logic.js                 the decision core: state shape, validation, the pick algorithm
 sw.js                    service worker, caches the app shell — bump CACHE on release
 manifest.webmanifest     PWA manifest
+privacy.html             privacy policy, linked from Backup & data and from the store listing
+CNAME / .nojekyll        GitHub Pages: the custom domain, and serve dot-folders as-is
 icons/                   generated app icons
 scripts/make_icons.js    regenerates icons/ (zero-dependency PNG writer)
 tests/logic.test.js      unit tests for logic.js (node --test)
@@ -398,10 +400,11 @@ build ever ships with this row, check the current Play rules on external payment
 The app is already store-shaped: relative paths only, no network calls, portrait manifest, safe-area
 insets, maskable icon. Wrapping it is the next step, not a rewrite.
 
-- **Google Play** — either [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) (a TWA
-  pointing at the hosted PWA; needs a real HTTPS host and Digital Asset Links) or Capacitor, which
-  bundles these files into the APK and needs no host at all. Capacitor is the better fit here since
-  the app is fully offline.
+- **Google Play** — [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap), a TWA pointing
+  at the hosted PWA. It runs in real Chrome, so every web API the app uses behaves as it does in the
+  browser. Needs Digital Asset Links at the origin root, which is why the app is served from its own
+  domain, `unstuck.thirddrawerstudios.com`, rather than a GitHub project path. `.nojekyll` keeps
+  Pages from dropping the `.well-known/` folder that file lives in.
 - **App Store** — Capacitor with the iOS target. Needs a Mac with Xcode and a paid Apple developer
   account. Apple rejects apps that are "just a website", so the offline-first install and native
   packaging matter.
