@@ -39,6 +39,7 @@ sw.js                    service worker, caches the app shell — bump CACHE on 
 manifest.webmanifest     PWA manifest
 privacy.html             privacy policy, linked from Backup & data and from the store listing
 CNAME / .nojekyll        GitHub Pages: the custom domain, and serve dot-folders as-is
+.well-known/assetlinks.json  Digital Asset Links: lets the Play app open without a URL bar
 icons/                   generated app icons
 scripts/make_icons.js    regenerates icons/ (zero-dependency PNG writer)
 tests/logic.test.js      unit tests for logic.js (node --test)

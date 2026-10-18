@@ -70,6 +70,14 @@ closed-test window are.
      which is why the app moved to its own subdomain: a GitHub project page lives under `/unstuck/`
      and cannot put a file there. Without it the TWA shows Chrome's URL bar. `.nojekyll` is in place
      so Pages serves the dot-folder.
+   - The Android project lives in `~/dev/Unstuck-android`, **outside this public repo**, because it
+     holds the upload key. `assetlinks.json` lists that key's SHA-256; after the first upload, add
+     the **app signing key** from Play Console → App integrity as a second entry, or installs from
+     Play show the URL bar.
+   - Two Bubblewrap 1.25 traps, both already worked around there: its template sets
+     `minSdkVersion 21` while `androidbrowserhelper` needs 24 (raised to 24 in `twa-manifest.json`),
+     and it passes the keystore password through a shell unescaped at signing time, so a `$` in the
+     password silently changes it. Keep that password to letters and digits.
    - Lists live in the origin's storage. Moving the host again would leave web users' lists behind
      on the old one — export, then import on the new origin.
 

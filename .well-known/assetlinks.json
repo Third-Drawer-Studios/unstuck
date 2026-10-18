@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.thirddrawerstudios.unstuck",
+      "sha256_cert_fingerprints": [
+        "88:FF:1E:32:16:63:E3:07:AA:A5:27:F9:68:D2:AC:9E:FA:EF:B2:1B:0F:BA:E5:C0:9F:50:9C:5D:F7:FC:42:17"
+      ]
+    }
+  }
+]

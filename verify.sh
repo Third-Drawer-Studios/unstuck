@@ -10,8 +10,10 @@ for f in logic.js sw.js scripts/make_icons.js tests/*.test.js; do
   node --check "$f" && echo "syntax ok: $f" || status=1
 done
 
-python3 -c "import json,sys; json.load(open('manifest.webmanifest'))" \
-  && echo "json ok: manifest.webmanifest" || status=1
+for f in manifest.webmanifest .well-known/assetlinks.json; do
+  python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" \
+    && echo "json ok: $f" || status=1
+done
 
 # The inline app script is not a standalone file, so extract it to check it.
 python3 - <<'PY' > /tmp/unstuck-inline.js
