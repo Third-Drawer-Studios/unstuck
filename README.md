@@ -25,7 +25,7 @@ the browser only — for a real "Add to Home Screen" install, host the folder on
 Netlify.
 
 **Editing gotcha:** `sw.js` is network-first, but browsers still cache aggressively. After an edit,
-hard-refresh, or bump `CACHE` in `sw.js` (currently `unstuck-v16`), or load with a `?v=N`
+hard-refresh, or bump `CACHE` in `sw.js` (currently `unstuck-v17`), or load with a `?v=N`
 cache-buster. If a change seems not to apply, this is almost always why.
 
 ## Layout
@@ -419,7 +419,8 @@ node scripts/make_icons.js
 ```
 
 Writes `icons/icon-192.png`, `icon-512.png`, `icon-512-maskable.png` and `icon-512-monochrome.png`
-— an amber line that loops once and runs straight out as an arrow, on a dark field. Pure Node, no
+— an amber line that loops once and runs straight out as an arrow, on a flat field of the manifest's `background_color`, so the
+Android splash screen shows no square around it. Pure Node, no
 dependencies: it rasterises with signed-distance functions and writes the PNG chunks by hand. The
 maskable and monochrome variants fit the motif inside the circular safe zone so platform masks don't
 clip it; the monochrome one is white on transparent, which Android uses for the notification icon

@@ -70,8 +70,8 @@ const over = (dst, src, a) => mixRGB(dst, src, clamp(a, 0, 1));
 /** Antialiased coverage from a signed distance in pixels. */
 const cover = (d) => clamp(0.5 - d, 0, 1);
 
-const BG_TOP = [0x16, 0x1b, 0x26];
-const BG_BOT = [0x0b, 0x0e, 0x13];
+// The splash screen's colour (manifest background_color), so the icon sits on it with no visible edge.
+const BG = [0x10, 0x13, 0x18];
 const GLOW = [0xf4, 0xa1, 0x3c];
 const LINE_START = [0xe0, 0x84, 0x1c];
 const LINE_END = [0xff, 0xc9, 0x7a];
@@ -171,7 +171,8 @@ function renderIcon(size, kind) {
         continue;
       }
 
-      let rgb = mixRGB(BG_TOP, BG_BOT, clamp(py / size, 0, 1));
+      // The glow fades out before the edge, keeping the border exactly BG.
+      let rgb = BG;
       const glow = Math.max(0, 1 - Math.hypot(px - c, py - c) / (size * 0.52));
       rgb = over(rgb, GLOW, Math.pow(glow, 2.6) * 0.22);
 
