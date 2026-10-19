@@ -20,7 +20,7 @@ The latest round added a **search** above the list grid, answering "which list w
 reaches list names, things and their steps, includes finished things, folds case and accents, and
 groups every match under the list it is in. A match opens its list with that row outlined; the
 outline is dropped by the next render rather than by a timer, so nothing has to tidy up after it.
-`sw.js` is at `unstuck-v15`.
+`sw.js` is at `unstuck-v16`.
 
 Before it, `b737e57` put a **Sort** control above the grid — as added, by name either way, or by how
 many things are left — sorting a copy so the stored order still means "as added". `213efb5` made the

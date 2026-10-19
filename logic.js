@@ -806,6 +806,12 @@ var UnstuckLogic = (() => {
     return then.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
   }
 
+  /** Named for the day it was made where the user is; a UTC date runs a day ahead every evening in the Americas. */
+  function backupFileName(now) {
+    const pad = (n) => String(n).padStart(2, '0');
+    return 'unstuck-backup-' + now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + '.json';
+  }
+
   function listSummary(list) {
     if (!list.items.length) return 'Empty';
     if (list.kind === 'endless') {
@@ -847,7 +853,7 @@ var UnstuckLogic = (() => {
     listById, isPickable, pickableCount, activeLists, pool, LIST_SORTS, sortLists,
     foldForSearch, matchRange, searchLists, countMatches,
     recentDepth, chooseFrom, pushHistory,
-    plural, relativeDay, listSummary, cardMeta,
+    plural, relativeDay, backupFileName, listSummary, cardMeta,
   };
 })();
 

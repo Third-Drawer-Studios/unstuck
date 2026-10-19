@@ -820,6 +820,14 @@ test('relativeDay treats a future timestamp as today rather than a negative coun
   assert.equal(L.relativeDay(new Date(2026, 7, 9).getTime(), now), 'today');
 });
 
+test('backupFileName dates the file by the local day, not the UTC one', () => {
+  // An evening export west of UTC, or an early one east of it, is on a different
+  // UTC day; whichever side the test machine is on, one of these two catches it.
+  assert.equal(L.backupFileName(new Date(2026, 9, 18, 23, 45)), 'unstuck-backup-2026-10-18.json');
+  assert.equal(L.backupFileName(new Date(2026, 9, 18, 0, 15)), 'unstuck-backup-2026-10-18.json');
+  assert.equal(L.backupFileName(new Date(2026, 0, 5, 12)), 'unstuck-backup-2026-01-05.json', 'month and day are padded');
+});
+
 test('listSummary reads as what is left, or as progress, on request', () => {
   assert.equal(L.listSummary(list('E', 'once', [])), 'Empty');
   assert.equal(L.listSummary(list('T', 'once', [item('a'), item('b', { done: true })])), '1 thing left');

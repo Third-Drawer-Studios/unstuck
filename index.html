@@ -1023,8 +1023,10 @@ dialog .dlg-actions {
   padding: 22px 0 12px;
   margin-bottom: -20px;
   /* Content scrolls under this, so the fade has to be long enough to read as one
-     rather than as a line drawn across whatever sits behind it. */
-  background: linear-gradient(to top, var(--surface) 58%, transparent);
+     rather than as a line drawn across whatever sits behind it. Its length is fixed,
+     not a share of the height: a stack of buttons would otherwise be see-through
+     between its upper rows. */
+  background: linear-gradient(to top, var(--surface) calc(100% - 34px), transparent);
   box-shadow: 0 -12px 16px -12px rgba(0, 0, 0, 0.9);
 }
 
@@ -4474,11 +4476,10 @@ dialog select:focus { border-color: var(--accent); outline: none; }
     }
     // Prefer the stored bytes so a backup can rescue data this build failed to parse.
     const payload = raw || JSON.stringify(state);
-    const stamp = new Date().toISOString().slice(0, 10);
     const url = URL.createObjectURL(new Blob([payload], { type: 'application/json' }));
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'unstuck-backup-' + stamp + '.json';
+    a.download = L.backupFileName(new Date());
     document.body.appendChild(a);
     a.click();
     a.remove();
