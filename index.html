@@ -4113,12 +4113,21 @@ dialog select:focus { border-color: var(--accent); outline: none; }
     }
 
     if ('Notification' in window && Notification.permission === 'granted') {
-      try {
-        new Notification('Unstuck', { body: message, icon: './icons/icon-192.png', tag: 'unstuck-timer' });
-      } catch (err) {
+      postAlarmNotification(message).catch((err) => {
         console.warn('Unstuck: could not post the timer notification', err);
-      }
+      });
     }
+  }
+
+  /**
+   * Android Chrome refuses `new Notification()` outright ("Illegal constructor"),
+   * so whenever a service worker is registered the notification goes through it.
+   */
+  async function postAlarmNotification(message) {
+    const options = { body: message, icon: './icons/icon-192.png', tag: 'unstuck-timer', renotify: true };
+    const reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.getRegistration() : undefined;
+    if (reg) return reg.showNotification('Unstuck', options);
+    new Notification('Unstuck', options);
   }
 
   /** Asked for once, the first time a timer is started. */

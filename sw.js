@@ -1,6 +1,6 @@
 // Unstuck service worker — caches the app shell so it launches offline once installed.
 // Bump CACHE on any release to invalidate the old shell.
-const CACHE = 'unstuck-v14';
+const CACHE = 'unstuck-v15';
 const SHELL = [
   './',
   './index.html',
@@ -46,5 +46,16 @@ self.addEventListener('fetch', (event) => {
         return res;
       })
       .catch(() => caches.match(req).then((cached) => cached || caches.match('./index.html')))
+  );
+});
+
+// Tapping the timer's notification brings the app forward; without this the tap does nothing.
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((wins) => {
+      const open = wins.find((w) => 'focus' in w);
+      return open ? open.focus() : self.clients.openWindow('./');
+    })
   );
 });

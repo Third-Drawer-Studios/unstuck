@@ -25,7 +25,7 @@ the browser only — for a real "Add to Home Screen" install, host the folder on
 Netlify.
 
 **Editing gotcha:** `sw.js` is network-first, but browsers still cache aggressively. After an edit,
-hard-refresh, or bump `CACHE` in `sw.js` (currently `unstuck-v14`), or load with a `?v=N`
+hard-refresh, or bump `CACHE` in `sw.js` (currently `unstuck-v15`), or load with a `?v=N`
 cache-buster. If a change seems not to apply, this is almost always why.
 
 ## Layout

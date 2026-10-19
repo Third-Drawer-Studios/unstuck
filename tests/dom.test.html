@@ -1267,6 +1267,38 @@
     equal(shown(app.win, app.$('timerPause')), false, 'nothing left to pause');
   });
 
+  /** Boots a timer that ends in a moment, with notifications already permitted. */
+  async function bootAlarm(notification, registration) {
+    const state = stateOf([listOf('once', 'Chores', ['Wash up'])]);
+    state.timer = { duration: 600000, endsAt: Date.now() + 1500, label: 'Wash up', pausedAt: 0 };
+    const app = await boot(state);
+    notification.permission = 'granted';
+    app.win.Notification = notification;
+    app.win.navigator.serviceWorker.getRegistration = async () => registration;
+    return app;
+  }
+
+  test('a finished timer posts its notification through the service worker', async () => {
+    // Android Chrome throws on `new Notification()`, so with a registration present
+    // the constructor must never be the route.
+    const posted = [];
+    function Refused() { throw new TypeError('Illegal constructor'); }
+    await bootAlarm(Refused, {
+      showNotification: async (title, options) => { posted.push({ title, body: options.body }); },
+    });
+    await waitFor(() => posted.length, 'the notification', 4000);
+    equal(posted[0].title, 'Unstuck');
+    equal(posted[0].body, 'Wash up — time is up');
+  });
+
+  test('without a service worker the alarm still posts a plain notification', async () => {
+    const posted = [];
+    function Plain(title, options) { posted.push({ title, body: options.body }); }
+    await bootAlarm(Plain, undefined);
+    await waitFor(() => posted.length, 'the notification', 4000);
+    equal(posted[0].body, 'Wash up — time is up');
+  });
+
   test('pause holds the clock, and stop clears the timer entirely', async () => {
     const state = stateOf([listOf('once', 'Chores', ['Wash up'])]);
     state.timer = { duration: 600000, endsAt: Date.now() + 300000, label: 'Chores', pausedAt: 0 };
